@@ -48,11 +48,13 @@ def parse_verdict(text: str) -> int | None:
     return None
 
 
-def load_hand_labels(path: Path = LABELS) -> dict[str, int]:
+def load_hand_labels(answers_file: str, path: Path = LABELS) -> dict[str, int]:
+    """Labels for one answers run only: the same question id in another run is a different answer."""
     if not path.exists():
         return {}
     with open(path, encoding="utf-8", newline="") as f:
-        return {r["id"]: int(r["label"]) for r in csv.DictReader(f) if r["label"].strip() in ("0", "1")}
+        rows = [r for r in csv.DictReader(f) if r["answers_file"] == answers_file]
+    return {r["id"]: int(r["label"]) for r in rows if r["label"] in ("0", "1")}
 
 
 def agreement(judge: dict[str, int], hand: dict[str, int]) -> dict | None:
@@ -105,7 +107,7 @@ def main() -> None:
     for author in sorted({r["author"] for r in run["rows"] if r["answerable"]}):
         ids = [r["id"] for r in run["rows"] if r["answerable"] and r["author"] == author]
         by_author[author] = bootstrap_ci([verdicts[i] for i in ids])
-    hand = load_hand_labels()
+    hand = load_hand_labels(args.answers.name)
     agree = agreement({i: verdicts[i] for i in answerable}, hand)
     result = {
         "answers_file": args.answers.name,

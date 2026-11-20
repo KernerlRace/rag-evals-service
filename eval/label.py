@@ -31,7 +31,7 @@ def main() -> None:
     run = json.loads(args.answers.read_text(encoding="utf-8"))
     rows = [r for r in run["rows"] if r["answerable"]]
     sample = random.Random(0).sample(rows, min(args.n, len(rows)))
-    done = load_hand_labels()
+    done = load_hand_labels(args.answers.name)
     todo = [r for r in sample if r["id"] not in done]
     print(f"{len(sample) - len(todo)} of {len(sample)} already labelled. {RULE}\n")
 

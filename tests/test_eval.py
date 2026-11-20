@@ -76,3 +76,15 @@ def test_judge_agreement_counts_the_confusion_matrix():
     assert out["n"] == 4
     assert out["confusion"] == {"hand1_judge1": 1, "hand1_judge0": 0, "hand0_judge1": 1, "hand0_judge0": 2}
     assert out["agreement"]["mean"] == 0.75
+
+
+def test_hand_labels_belong_to_one_answers_run(tmp_path):
+    from eval.judge import load_hand_labels
+
+    path = tmp_path / "labels.csv"
+    path.write_text(
+        "id,label,answers_file,note\nq001,1,answers_a.json,\nq001,0,answers_b.json,\nq002,s,answers_a.json,\n",
+        encoding="utf-8",
+    )
+    assert load_hand_labels("answers_a.json", path) == {"q001": 1}
+    assert load_hand_labels("answers_b.json", path) == {"q001": 0}
