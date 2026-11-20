@@ -20,7 +20,8 @@ class Answer:
 
     @property
     def abstained(self) -> bool:
-        return self.text.strip().rstrip(".").lower() == IDK.lower()
+        # Models often add a reason after the refusal ("I don't know. The excerpts only cover..."): still a refusal.
+        return self.text.strip().lower().startswith(IDK.lower())
 
 
 def answer(question: str, retriever: Retriever, llm, method: str, k: int) -> Answer:

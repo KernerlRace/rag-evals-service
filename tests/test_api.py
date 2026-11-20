@@ -59,3 +59,16 @@ def test_metrics_expose_latency_histograms(toy_retriever):
 def test_prompt_numbers_passages():
     prompt = build_prompt("q?", ["first", "second"])
     assert "[1] first" in prompt and "[2] second" in prompt and prompt.endswith("Answer:")
+
+
+def test_abstention_allows_a_reason_after_the_refusal():
+    from ragsvc.llm import Generation
+    from ragsvc.pipeline import Answer
+
+    def ans(text):
+        gen = Generation(text, 0, 0)
+        return Answer(question="q", text=text, hits=[], retrieval_seconds=0, generation_seconds=0, generation=gen)
+
+    assert ans("I don't know.").abstained
+    assert ans("I don't know. The excerpts only cover pip.").abstained
+    assert not ans("Use list.reverse() [1].").abstained

@@ -10,4 +10,4 @@ RETRIEVAL_SECONDS = Histogram("rag_retrieval_seconds", "Retrieval latency (all s
 GENERATION_SECONDS = Histogram("rag_generation_seconds", "LLM generation latency", LABELS, buckets=_BUCKETS)
 REQUESTS = Counter("rag_requests_total", "/ask requests by outcome", (*LABELS, "status"))
 TOKENS = Counter("rag_llm_tokens_total", "LLM tokens", (*LABELS, "kind"))
-ABSTAINED = Counter("rag_abstained_total", "Answers that were exactly \"I don't know\"", LABELS)
+ABSTAINED = Counter("rag_abstained_total", "Answers that start with \"I don't know\"", LABELS)
