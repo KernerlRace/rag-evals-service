@@ -1,7 +1,7 @@
 {
   "kind": "judge",
-  "created": "20261120-190721",
-  "git_commit": "04e572e",
+  "created": "20261120-225135",
+  "git_commit": "288f016",
   "answers_file": "answers_20261120-185735.json",
   "config": {
     "method": "hybrid",
@@ -31,7 +31,24 @@
     "hi": 1.0,
     "n": 8
   },
-  "judge_vs_hand": null,
+  "judge_vs_hand": {
+    "n": 40,
+    "agreement": {
+      "mean": 0.825,
+      "lo": 0.7,
+      "hi": 0.925,
+      "n": 40
+    },
+    "cohen_kappa": 0.2631578947368417,
+    "confusion": {
+      "hand1_judge1": 31,
+      "hand1_judge0": 3,
+      "hand0_judge1": 4,
+      "hand0_judge0": 2
+    },
+    "hand_accuracy_on_labelled": 0.85,
+    "judge_accuracy_on_labelled": 0.875
+  },
   "verdicts": {
     "q001": 1,
     "q002": 1,
@@ -153,7 +170,7 @@
     "u008": 1
   },
   "reasons": {
-    "q001": "{\"reason\": \"Candidate answer accurately states the key fact and provides a reference\", \"verdict\": \"correct\"}",
+    "q001": "{\"reason\": \"Candidate answer accurately states the key fact and does not contradict the reference.\", \"verdict\": \"correct\"}",
     "q002": "{\"reason\": \"Candidate answer accurately describes the behavior of a bounded deque in Python\", \"verdict\": \"correct\"}",
     "q003": "{\"reason\": \"JSON requires keys to be strings, leading to potential differences in the original dictionary and the deserialized one\", \"verdict\": \"incorrect\"}",
     "q004": "{\"reason\": \"The candidate answer is incorrect because it does not state the key fact that `shutil.rmtree` can be used to delete a folder together with everything inside it.\", \"verdict\": \"incorrect\"}",
