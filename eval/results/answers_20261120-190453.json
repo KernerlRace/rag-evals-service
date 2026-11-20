@@ -1,7 +1,7 @@
 {
   "kind": "answers",
-  "created": "20261120-185343",
-  "git_commit": "4af3e65",
+  "created": "20261120-190453",
+  "git_commit": "04e572e",
   "config": {
     "method": "hybrid_rerank",
     "size": 256,
@@ -11,31 +11,31 @@
   },
   "summary": {
     "latency_total": {
-      "p50_ms": 3595.6324500439223,
-      "p95_ms": 4286.722644986003,
+      "p50_ms": 3599.0392999956384,
+      "p95_ms": 4313.424939961987,
       "n": 118
     },
     "latency_retrieval": {
-      "p50_ms": 2155.2109500044025,
-      "p95_ms": 2333.4485999774183,
+      "p50_ms": 2164.320499985479,
+      "p95_ms": 2340.361364991986,
       "n": 118
     },
     "latency_generation": {
-      "p50_ms": 1438.9024500269443,
-      "p95_ms": 2053.6415099835717,
+      "p50_ms": 1439.1812999965623,
+      "p95_ms": 2026.811644973349,
       "n": 118
     },
     "mean_prompt_tokens": 1843.6694915254238,
     "mean_completion_tokens": 44.313559322033896,
     "false_abstention_rate": {
-      "mean": 0.0,
-      "lo": 0.0,
-      "hi": 0.0,
+      "mean": 0.045454545454545456,
+      "lo": 0.00909090909090909,
+      "hi": 0.09090909090909091,
       "n": 110
     },
     "correct_abstention_rate": {
-      "mean": 0.875,
-      "lo": 0.625,
+      "mean": 1.0,
+      "lo": 1.0,
       "hi": 1.0,
       "n": 8
     }
@@ -57,8 +57,8 @@
         "library/collections#31",
         "library/functools#5"
       ],
-      "retrieval_s": 3.1932769999839365,
-      "generation_s": 1.5994035999756306,
+      "retrieval_s": 3.00460500002373,
+      "generation_s": 1.6223783000023104,
       "prompt_tokens": 2239,
       "completion_tokens": 42
     },
@@ -78,8 +78,8 @@
         "library/itertools#20",
         "library/collections#16"
       ],
-      "retrieval_s": 3.168490899959579,
-      "generation_s": 2.121479300025385,
+      "retrieval_s": 2.552868800004944,
+      "generation_s": 2.015530399978161,
       "prompt_tokens": 2355,
       "completion_tokens": 65
     },
@@ -99,8 +99,8 @@
         "library/json#1",
         "library/json#8"
       ],
-      "retrieval_s": 2.2425557000096887,
-      "generation_s": 2.086934100021608,
+      "retrieval_s": 2.359392400016077,
+      "generation_s": 2.122464299958665,
       "prompt_tokens": 1816,
       "completion_tokens": 88
     },
@@ -120,8 +120,8 @@
         "library/os#81",
         "tutorial/datastructures#10"
       ],
-      "retrieval_s": 2.1443857999984175,
-      "generation_s": 1.2072780999587849,
+      "retrieval_s": 2.3392610999871977,
+      "generation_s": 1.2046372999902815,
       "prompt_tokens": 1899,
       "completion_tokens": 22
     },
@@ -141,8 +141,8 @@
         "library/idle#35",
         "library/subprocess#4"
       ],
-      "retrieval_s": 2.3048754999763332,
-      "generation_s": 1.226888700039126,
+      "retrieval_s": 2.1450318000279367,
+      "generation_s": 1.3230325999902561,
       "prompt_tokens": 2107,
       "completion_tokens": 26
     },
@@ -162,8 +162,8 @@
         "library/subprocess#35",
         "library/subprocess#7"
       ],
-      "retrieval_s": 2.3830427000066265,
-      "generation_s": 1.4811639999970794,
+      "retrieval_s": 2.1655427000368945,
+      "generation_s": 1.3996213999926113,
       "prompt_tokens": 1753,
       "completion_tokens": 46
     },
@@ -183,8 +183,8 @@
         "howto/regex#13",
         "howto/regex#42"
       ],
-      "retrieval_s": 2.302178099984303,
-      "generation_s": 1.6518607000471093,
+      "retrieval_s": 2.161800800007768,
+      "generation_s": 1.5440528999897651,
       "prompt_tokens": 1496,
       "completion_tokens": 61
     },
@@ -195,7 +195,7 @@
       "answerable": true,
       "author": "draft",
       "answer": "I don't know. The provided excerpts do not discuss what happens if you call `logging.basicConfig` multiple times.",
-      "abstained": false,
+      "abstained": true,
       "gold_rank": null,
       "sources": [
         "library/logging.config#13",
@@ -204,8 +204,8 @@
         "library/logging#2",
         "library/logging#38"
       ],
-      "retrieval_s": 2.3246966999722645,
-      "generation_s": 1.0960793000413105,
+      "retrieval_s": 2.183192099968437,
+      "generation_s": 1.1683703000308014,
       "prompt_tokens": 1761,
       "completion_tokens": 24
     },
@@ -225,8 +225,8 @@
         "library/typing#75",
         "library/typing#9"
       ],
-      "retrieval_s": 2.1447686999454163,
-      "generation_s": 1.4685173000325449,
+      "retrieval_s": 2.143917399982456,
+      "generation_s": 1.4127465999918059,
       "prompt_tokens": 2081,
       "completion_tokens": 37
     },
@@ -237,7 +237,7 @@
       "answerable": true,
       "author": "draft",
       "answer": "I don't know. The provided documentation does not specify why calling `asyncio.run` inside a Jupyter notebook or another running loop would result in an error.",
-      "abstained": false,
+      "abstained": true,
       "gold_rank": 3,
       "sources": [
         "library/asyncio-dev#12",
@@ -246,8 +246,8 @@
         "library/asyncio-runner#2",
         "library/asyncio-eventloop#3"
       ],
-      "retrieval_s": 2.1229657999938354,
-      "generation_s": 1.3617755000013858,
+      "retrieval_s": 2.153854299976956,
+      "generation_s": 1.3658692000317387,
       "prompt_tokens": 1890,
       "completion_tokens": 34
     },
@@ -267,8 +267,8 @@
         "howto/free-threading-python#5",
         "howto/free-threading-python#4"
       ],
-      "retrieval_s": 2.1601164000458084,
-      "generation_s": 1.43562020000536,
+      "retrieval_s": 2.1727341000223532,
+      "generation_s": 1.482343299954664,
       "prompt_tokens": 884,
       "completion_tokens": 74
     },
@@ -288,8 +288,8 @@
         "library/asyncio-eventloop#33",
         "library/concurrent.futures#9"
       ],
-      "retrieval_s": 2.153657499991823,
-      "generation_s": 1.7576912000076845,
+      "retrieval_s": 2.1651580999605358,
+      "generation_s": 1.767155300010927,
       "prompt_tokens": 1900,
       "completion_tokens": 67
     },
@@ -309,8 +309,8 @@
         "library/pickle#4",
         "library/idle#35"
       ],
-      "retrieval_s": 2.204346499987878,
-      "generation_s": 1.495039800007362,
+      "retrieval_s": 2.241016500047408,
+      "generation_s": 1.4931152999633923,
       "prompt_tokens": 1895,
       "completion_tokens": 45
     },
@@ -330,8 +330,8 @@
         "library/heapq#2",
         "tutorial/stdlib2#9"
       ],
-      "retrieval_s": 2.15555729996413,
-      "generation_s": 1.0842990000382997,
+      "retrieval_s": 2.15221729996847,
+      "generation_s": 1.0656640999950469,
       "prompt_tokens": 1821,
       "completion_tokens": 19
     },
@@ -351,8 +351,8 @@
         "library/bisect#4",
         "reference/executionmodel#16"
       ],
-      "retrieval_s": 2.1263843000051565,
-      "generation_s": 0.9853657999774441,
+      "retrieval_s": 2.177557799965143,
+      "generation_s": 1.0426143000368029,
       "prompt_tokens": 1450,
       "completion_tokens": 23
     },
@@ -372,8 +372,8 @@
         "library/sqlite3#4",
         "library/sqlite3#43"
       ],
-      "retrieval_s": 2.1929347999976017,
-      "generation_s": 1.7598473000107333,
+      "retrieval_s": 2.149509000009857,
+      "generation_s": 1.8026270999689586,
       "prompt_tokens": 1753,
       "completion_tokens": 73
     },
@@ -393,8 +393,8 @@
         "library/csv#2",
         "library/csv#8"
       ],
-      "retrieval_s": 2.1593450999935158,
-      "generation_s": 1.0840213000192307,
+      "retrieval_s": 2.1708531999611296,
+      "generation_s": 1.1191532000084408,
       "prompt_tokens": 2020,
       "completion_tokens": 11
     },
@@ -414,8 +414,8 @@
         "library/tempfile#6",
         "library/tempfile#5"
       ],
-      "retrieval_s": 2.142255100014154,
-      "generation_s": 1.8361611000145786,
+      "retrieval_s": 2.1303117999923415,
+      "generation_s": 1.8584509000065736,
       "prompt_tokens": 2024,
       "completion_tokens": 66
     },
@@ -435,8 +435,8 @@
         "library/reprlib#2",
         "library/pprint#5"
       ],
-      "retrieval_s": 2.1569217000505887,
-      "generation_s": 1.4151561000035144,
+      "retrieval_s": 2.238330800028052,
+      "generation_s": 1.3564248000038788,
       "prompt_tokens": 1818,
       "completion_tokens": 40
     },
@@ -456,8 +456,8 @@
         "library/http.server#14",
         "library/http.server#13"
       ],
-      "retrieval_s": 2.154864600044675,
-      "generation_s": 1.721739400003571,
+      "retrieval_s": 2.2830518999835476,
+      "generation_s": 1.6719358999980614,
       "prompt_tokens": 1717,
       "completion_tokens": 69
     },
@@ -477,8 +477,8 @@
         "library/graphlib#1",
         "library/graphlib#2"
       ],
-      "retrieval_s": 2.127101899997797,
-      "generation_s": 2.1520735999802127,
+      "retrieval_s": 2.3620207000058144,
+      "generation_s": 2.177153199969325,
       "prompt_tokens": 1996,
       "completion_tokens": 89
     },
@@ -498,8 +498,8 @@
         "library/statistics#12",
         "library/statistics#13"
       ],
-      "retrieval_s": 2.3185942999552935,
-      "generation_s": 1.4680478000082076,
+      "retrieval_s": 2.1766467000124976,
+      "generation_s": 1.4358570000040345,
       "prompt_tokens": 2251,
       "completion_tokens": 26
     },
@@ -519,8 +519,8 @@
         "library/decimal#9",
         "library/decimal#1"
       ],
-      "retrieval_s": 2.24899930000538,
-      "generation_s": 1.9335886999615468,
+      "retrieval_s": 2.156901000009384,
+      "generation_s": 1.8871124000288546,
       "prompt_tokens": 2308,
       "completion_tokens": 66
     },
@@ -540,8 +540,8 @@
         "library/functools#3",
         "glossary#24"
       ],
-      "retrieval_s": 2.2142120000207797,
-      "generation_s": 2.3127122999867424,
+      "retrieval_s": 2.1453570000012405,
+      "generation_s": 2.25702859996818,
       "prompt_tokens": 2123,
       "completion_tokens": 95
     },
@@ -561,8 +561,8 @@
         "library/collections#11",
         "library/collections#6"
       ],
-      "retrieval_s": 2.1679125999799,
-      "generation_s": 1.1936123000341468,
+      "retrieval_s": 2.2003394999774173,
+      "generation_s": 1.214917300036177,
       "prompt_tokens": 2241,
       "completion_tokens": 15
     },
@@ -582,8 +582,8 @@
         "library/dataclasses#1",
         "library/dataclasses#5"
       ],
-      "retrieval_s": 2.1273693999974057,
-      "generation_s": 1.1828982000006363,
+      "retrieval_s": 2.1394805000163615,
+      "generation_s": 1.1987270999816246,
       "prompt_tokens": 1851,
       "completion_tokens": 24
     },
@@ -603,8 +603,8 @@
         "library/dataclasses#22",
         "library/dataclasses#24"
       ],
-      "retrieval_s": 2.205493399989791,
-      "generation_s": 1.8618113999837078,
+      "retrieval_s": 2.148885800037533,
+      "generation_s": 1.8039385000010952,
       "prompt_tokens": 1559,
       "completion_tokens": 82
     },
@@ -624,8 +624,8 @@
         "builtins/exceptions#18",
         "library/pathlib#29"
       ],
-      "retrieval_s": 2.127206999983173,
-      "generation_s": 1.8845505000208504,
+      "retrieval_s": 2.151908800005913,
+      "generation_s": 1.8705330999800935,
       "prompt_tokens": 2157,
       "completion_tokens": 69
     },
@@ -645,8 +645,8 @@
         "library/datetime#42",
         "library/datetime#30"
       ],
-      "retrieval_s": 2.177911299979314,
-      "generation_s": 1.5491719000274315,
+      "retrieval_s": 2.111946600023657,
+      "generation_s": 1.5330564000178128,
       "prompt_tokens": 1872,
       "completion_tokens": 51
     },
@@ -666,8 +666,8 @@
         "library/secrets#5",
         "library/secrets#1"
       ],
-      "retrieval_s": 2.149933199980296,
-      "generation_s": 1.3059678000281565,
+      "retrieval_s": 2.1289954999811016,
+      "generation_s": 1.300625400035642,
       "prompt_tokens": 1288,
       "completion_tokens": 53
     },
@@ -687,8 +687,8 @@
         "library/binascii#2",
         "builtins/functions#24"
       ],
-      "retrieval_s": 2.1432192999636754,
-      "generation_s": 1.4646583000430837,
+      "retrieval_s": 2.1467826000298373,
+      "generation_s": 1.4630709000048228,
       "prompt_tokens": 2072,
       "completion_tokens": 39
     },
@@ -708,8 +708,8 @@
         "howto/logging#15",
         "library/multiprocessing#75"
       ],
-      "retrieval_s": 2.1284034999553114,
-      "generation_s": 1.4086336000473239,
+      "retrieval_s": 2.1585424999939278,
+      "generation_s": 1.4534770000027493,
       "prompt_tokens": 1897,
       "completion_tokens": 39
     },
@@ -729,8 +729,8 @@
         "library/asyncio-task#7",
         "library/asyncio-task#10"
       ],
-      "retrieval_s": 2.179233699978795,
-      "generation_s": 1.6116360999876633,
+      "retrieval_s": 2.1529956000158563,
+      "generation_s": 1.6093003999558277,
       "prompt_tokens": 1867,
       "completion_tokens": 54
     },
@@ -750,8 +750,8 @@
         "library/asyncio-dev#7",
         "library/asyncio-queue#6"
       ],
-      "retrieval_s": 2.1254836000152864,
-      "generation_s": 1.0787021999713033,
+      "retrieval_s": 2.29989869997371,
+      "generation_s": 1.0731498000095598,
       "prompt_tokens": 1693,
       "completion_tokens": 35
     },
@@ -771,8 +771,8 @@
         "library/multiprocessing#24",
         "library/multiprocessing#14"
       ],
-      "retrieval_s": 2.2872865999815986,
-      "generation_s": 1.132505299989134,
+      "retrieval_s": 2.3098728000186384,
+      "generation_s": 1.1203907000017352,
       "prompt_tokens": 1895,
       "completion_tokens": 19
     },
@@ -792,8 +792,8 @@
         "reference/compound_stmts#7",
         "faq/design#11"
       ],
-      "retrieval_s": 2.2660199000383727,
-      "generation_s": 1.7135254999739118,
+      "retrieval_s": 2.1348580999765545,
+      "generation_s": 1.744395500048995,
       "prompt_tokens": 1814,
       "completion_tokens": 68
     },
@@ -813,8 +813,8 @@
         "library/enum#16",
         "library/enum#15"
       ],
-      "retrieval_s": 2.1260248000035062,
-      "generation_s": 2.0486618999857455,
+      "retrieval_s": 2.1622143000131473,
+      "generation_s": 2.090738699946087,
       "prompt_tokens": 2113,
       "completion_tokens": 86
     },
@@ -834,8 +834,8 @@
         "library/dataclasses#11",
         "faq/programming#22"
       ],
-      "retrieval_s": 2.195249500044156,
-      "generation_s": 1.4748778999783099,
+      "retrieval_s": 2.192968400020618,
+      "generation_s": 1.4576759000192396,
       "prompt_tokens": 1734,
       "completion_tokens": 45
     },
@@ -855,8 +855,8 @@
         "library/bisect#0",
         "library/bisect#5"
       ],
-      "retrieval_s": 2.1414204000029713,
-      "generation_s": 2.0818592999712564,
+      "retrieval_s": 2.198723799956497,
+      "generation_s": 2.099002200004179,
       "prompt_tokens": 2170,
       "completion_tokens": 84
     },
@@ -876,8 +876,8 @@
         "tutorial/floatingpoint#3",
         "reference/expressions#50"
       ],
-      "retrieval_s": 2.1596091000246815,
-      "generation_s": 1.5992283999803476,
+      "retrieval_s": 2.1891899000038393,
+      "generation_s": 1.5523722000070848,
       "prompt_tokens": 2352,
       "completion_tokens": 40
     },
@@ -897,8 +897,8 @@
         "library/pprint#6",
         "library/pprint#5"
       ],
-      "retrieval_s": 2.1577153999824077,
-      "generation_s": 1.2370053000049666,
+      "retrieval_s": 2.161588400020264,
+      "generation_s": 1.2220498999813572,
       "prompt_tokens": 1737,
       "completion_tokens": 39
     },
@@ -918,8 +918,8 @@
         "library/subprocess#22",
         "library/subprocess#12"
       ],
-      "retrieval_s": 2.1655086999526247,
-      "generation_s": 1.6331986000295728,
+      "retrieval_s": 2.1962974999914877,
+      "generation_s": 1.6203529000049457,
       "prompt_tokens": 1942,
       "completion_tokens": 53
     },
@@ -939,8 +939,8 @@
         "library/fileinput#3",
         "library/tomllib#0"
       ],
-      "retrieval_s": 2.1932433000183664,
-      "generation_s": 1.18049559998326,
+      "retrieval_s": 2.236329499981366,
+      "generation_s": 1.1527242000447586,
       "prompt_tokens": 1790,
       "completion_tokens": 25
     },
@@ -951,7 +951,7 @@
       "answerable": true,
       "author": "draft",
       "answer": "I don't know. The provided documentation does not mention how to remove indentation from triple-quoted strings.",
-      "abstained": false,
+      "abstained": true,
       "gold_rank": null,
       "sources": [
         "reference/lexical_analysis#7",
@@ -960,8 +960,8 @@
         "builtins/stdtypes#42",
         "reference/lexical_analysis#28"
       ],
-      "retrieval_s": 2.1767302000080235,
-      "generation_s": 1.1435811999836005,
+      "retrieval_s": 2.2128453999757767,
+      "generation_s": 1.0838544000289403,
       "prompt_tokens": 1683,
       "completion_tokens": 22
     },
@@ -981,8 +981,8 @@
         "library/hashlib#7",
         "library/hashlib#12"
       ],
-      "retrieval_s": 2.164786000037566,
-      "generation_s": 1.5690821999451146,
+      "retrieval_s": 2.1460763000068255,
+      "generation_s": 1.559398700017482,
       "prompt_tokens": 1848,
       "completion_tokens": 56
     },
@@ -1002,8 +1002,8 @@
         "library/subprocess#9",
         "builtins/functions#60"
       ],
-      "retrieval_s": 2.185010900022462,
-      "generation_s": 1.2694421999622136,
+      "retrieval_s": 2.134405400021933,
+      "generation_s": 1.2897141000139527,
       "prompt_tokens": 1485,
       "completion_tokens": 40
     },
@@ -1023,8 +1023,8 @@
         "library/venv#3",
         "library/venv#8"
       ],
-      "retrieval_s": 2.145802500017453,
-      "generation_s": 1.5858959999750368,
+      "retrieval_s": 2.1540188000071794,
+      "generation_s": 1.6068303000065498,
       "prompt_tokens": 2274,
       "completion_tokens": 44
     },
@@ -1044,8 +1044,8 @@
         "library/timeit#6",
         "library/timeit#4"
       ],
-      "retrieval_s": 2.161719100025948,
-      "generation_s": 1.2306579999858513,
+      "retrieval_s": 2.156542799959425,
+      "generation_s": 1.2510436000302434,
       "prompt_tokens": 1920,
       "completion_tokens": 24
     },
@@ -1065,8 +1065,8 @@
         "library/weakref#12",
         "library/weakref#2"
       ],
-      "retrieval_s": 2.1389645999879576,
-      "generation_s": 1.4421847000485286,
+      "retrieval_s": 2.1549896000069566,
+      "generation_s": 1.4425055999890901,
       "prompt_tokens": 1654,
       "completion_tokens": 48
     },
@@ -1086,8 +1086,8 @@
         "library/zipfile#10",
         "library/zipfile#4"
       ],
-      "retrieval_s": 2.1714982999837957,
-      "generation_s": 1.3439941999968141,
+      "retrieval_s": 2.137286300014239,
+      "generation_s": 1.3442715999553911,
       "prompt_tokens": 2058,
       "completion_tokens": 29
     },
@@ -1107,8 +1107,8 @@
         "howto/sorting#7",
         "howto/sorting#5"
       ],
-      "retrieval_s": 2.1362238000147045,
-      "generation_s": 1.314284400024917,
+      "retrieval_s": 2.1302335999789648,
+      "generation_s": 1.3264719000435434,
       "prompt_tokens": 1975,
       "completion_tokens": 32
     },
@@ -1128,8 +1128,8 @@
         "library/enum#8",
         "library/itertools#8"
       ],
-      "retrieval_s": 2.157920399971772,
-      "generation_s": 1.3003179000224918,
+      "retrieval_s": 2.206512800010387,
+      "generation_s": 1.2646216999855824,
       "prompt_tokens": 2083,
       "completion_tokens": 23
     },
@@ -1149,8 +1149,8 @@
         "library/sys#44",
         "howto/logging-cookbook#102"
       ],
-      "retrieval_s": 2.132111300015822,
-      "generation_s": 1.680667500011623,
+      "retrieval_s": 2.267438300012145,
+      "generation_s": 1.7362258999492042,
       "prompt_tokens": 2124,
       "completion_tokens": 53
     },
@@ -1170,8 +1170,8 @@
         "faq/programming#30",
         "builtins/stdtypes#118"
       ],
-      "retrieval_s": 2.320148999977391,
-      "generation_s": 1.8720895000151359,
+      "retrieval_s": 2.129561499983538,
+      "generation_s": 1.834613100043498,
       "prompt_tokens": 2110,
       "completion_tokens": 64
     },
@@ -1191,8 +1191,8 @@
         "builtins/stdtypes#59",
         "builtins/stdtypes#58"
       ],
-      "retrieval_s": 2.261891799978912,
-      "generation_s": 1.4753182000131346,
+      "retrieval_s": 2.142065099964384,
+      "generation_s": 1.5302683000336401,
       "prompt_tokens": 2144,
       "completion_tokens": 41
     },
@@ -1212,8 +1212,8 @@
         "reference/expressions#12",
         "library/collections#29"
       ],
-      "retrieval_s": 2.1532221999950707,
-      "generation_s": 1.264382699970156,
+      "retrieval_s": 2.212972200009972,
+      "generation_s": 1.2053816999541596,
       "prompt_tokens": 2040,
       "completion_tokens": 23
     },
@@ -1224,7 +1224,7 @@
       "answerable": true,
       "author": "draft",
       "answer": "I don't know. The documentation does not provide specific information about the memory usage of `range(10**9)`. It mentions that range objects are more memory-friendly than equivalent lists, but it doesn't give details on the memory consumption for extremely large ranges. [1] [3]",
-      "abstained": false,
+      "abstained": true,
       "gold_rank": 1,
       "sources": [
         "builtins/stdtypes#40",
@@ -1233,8 +1233,8 @@
         "library/tracemalloc#5",
         "library/multiprocessing#9"
       ],
-      "retrieval_s": 2.138215899991337,
-      "generation_s": 1.8432234000065364,
+      "retrieval_s": 2.1524961999966763,
+      "generation_s": 1.800087200012058,
       "prompt_tokens": 2228,
       "completion_tokens": 61
     },
@@ -1254,8 +1254,8 @@
         "glossary#5",
         "builtins/stdtypes#77"
       ],
-      "retrieval_s": 2.2181496000266634,
-      "generation_s": 1.2033735999721102,
+      "retrieval_s": 2.1324667000444606,
+      "generation_s": 1.2333153000217862,
       "prompt_tokens": 1607,
       "completion_tokens": 32
     },
@@ -1275,8 +1275,8 @@
         "faq/programming#17",
         "builtins/stdtypes#34"
       ],
-      "retrieval_s": 2.1366941000451334,
-      "generation_s": 1.1938064999994822,
+      "retrieval_s": 2.167570599995088,
+      "generation_s": 1.2109257000265643,
       "prompt_tokens": 1372,
       "completion_tokens": 38
     },
@@ -1296,8 +1296,8 @@
         "reference/compound_stmts#4",
         "library/itertools#10"
       ],
-      "retrieval_s": 2.144253100035712,
-      "generation_s": 1.2545315999886952,
+      "retrieval_s": 2.1901790000265464,
+      "generation_s": 1.2921929999720305,
       "prompt_tokens": 2178,
       "completion_tokens": 23
     },
@@ -1317,8 +1317,8 @@
         "library/timeit#2",
         "library/time#4"
       ],
-      "retrieval_s": 2.1545277000404894,
-      "generation_s": 1.4287515999749303,
+      "retrieval_s": 2.1754393000155687,
+      "generation_s": 1.4587573999888264,
       "prompt_tokens": 2282,
       "completion_tokens": 34
     },
@@ -1338,8 +1338,8 @@
         "library/unittest#2",
         "library/unittest#49"
       ],
-      "retrieval_s": 2.2028849000344053,
-      "generation_s": 1.3269519999739714,
+      "retrieval_s": 2.1677023000083864,
+      "generation_s": 1.3536700999829918,
       "prompt_tokens": 1802,
       "completion_tokens": 41
     },
@@ -1359,8 +1359,8 @@
         "library/asynchat#0",
         "library/asyncore#0"
       ],
-      "retrieval_s": 2.1508193999761716,
-      "generation_s": 0.8644900000072084,
+      "retrieval_s": 2.1673776999814436,
+      "generation_s": 0.8547382999677211,
       "prompt_tokens": 1028,
       "completion_tokens": 20
     },
@@ -1380,8 +1380,8 @@
         "library/importlib#11",
         "library/abc#5"
       ],
-      "retrieval_s": 2.1428488999954425,
-      "generation_s": 1.4345434000133537,
+      "retrieval_s": 2.2052520000142977,
+      "generation_s": 1.3953313999809325,
       "prompt_tokens": 1947,
       "completion_tokens": 40
     },
@@ -1401,8 +1401,8 @@
         "library/heapq#8",
         "library/heapq#2"
       ],
-      "retrieval_s": 2.150970700022299,
-      "generation_s": 1.2747438999940641,
+      "retrieval_s": 2.1646171999746002,
+      "generation_s": 1.2640214000130072,
       "prompt_tokens": 1983,
       "completion_tokens": 28
     },
@@ -1422,8 +1422,8 @@
         "library/functools#5",
         "library/functools#14"
       ],
-      "retrieval_s": 2.142652500013355,
-      "generation_s": 1.5883713999646716,
+      "retrieval_s": 2.201698300021235,
+      "generation_s": 1.6516153999837115,
       "prompt_tokens": 2019,
       "completion_tokens": 49
     },
@@ -1443,8 +1443,8 @@
         "howto/enum#12",
         "howto/enum#24"
       ],
-      "retrieval_s": 2.120814200025052,
-      "generation_s": 0.8459865999757312,
+      "retrieval_s": 2.150600499997381,
+      "generation_s": 0.8528360999771394,
       "prompt_tokens": 1428,
       "completion_tokens": 16
     },
@@ -1464,8 +1464,8 @@
         "library/sqlite3#27",
         "library/sqlite3#53"
       ],
-      "retrieval_s": 2.1358847999945283,
-      "generation_s": 1.2821394000202417,
+      "retrieval_s": 2.1846516000223346,
+      "generation_s": 1.3598706999910064,
       "prompt_tokens": 2269,
       "completion_tokens": 25
     },
@@ -1485,8 +1485,8 @@
         "library/io#9",
         "library/io#3"
       ],
-      "retrieval_s": 2.126547899970319,
-      "generation_s": 0.9955194999929518,
+      "retrieval_s": 2.236090799968224,
+      "generation_s": 1.1129498000373133,
       "prompt_tokens": 1221,
       "completion_tokens": 32
     },
@@ -1506,8 +1506,8 @@
         "library/unittest.mock#50",
         "library/development#2"
       ],
-      "retrieval_s": 2.2052064999588765,
-      "generation_s": 1.391567100014072,
+      "retrieval_s": 2.1936725999694318,
+      "generation_s": 1.4430229000281543,
       "prompt_tokens": 1683,
       "completion_tokens": 50
     },
@@ -1527,8 +1527,8 @@
         "library/uuid#3",
         "library/uuid#7"
       ],
-      "retrieval_s": 2.22088460001396,
-      "generation_s": 1.6667318000108935,
+      "retrieval_s": 2.16867819998879,
+      "generation_s": 1.578674399992451,
       "prompt_tokens": 1948,
       "completion_tokens": 53
     },
@@ -1548,8 +1548,8 @@
         "library/socket#27",
         "library/socket#58"
       ],
-      "retrieval_s": 2.3936657000449486,
-      "generation_s": 1.0144585999660194,
+      "retrieval_s": 2.143209800007753,
+      "generation_s": 1.0254671999718994,
       "prompt_tokens": 1431,
       "completion_tokens": 21
     },
@@ -1569,8 +1569,8 @@
         "faq/programming#51",
         "library/math#10"
       ],
-      "retrieval_s": 2.1628960000234656,
-      "generation_s": 1.6675297999754548,
+      "retrieval_s": 2.248631499998737,
+      "generation_s": 1.6625119000091217,
       "prompt_tokens": 2223,
       "completion_tokens": 52
     },
@@ -1590,8 +1590,8 @@
         "library/io#5",
         "tutorial/inputoutput#10"
       ],
-      "retrieval_s": 2.1563156999764033,
-      "generation_s": 1.9170002000173554,
+      "retrieval_s": 2.146019699983299,
+      "generation_s": 1.8526925000478514,
       "prompt_tokens": 1947,
       "completion_tokens": 74
     },
@@ -1611,8 +1611,8 @@
         "library/inspect#23",
         "reference/compound_stmts#37"
       ],
-      "retrieval_s": 2.1214548000134528,
-      "generation_s": 1.1404054000158794,
+      "retrieval_s": 2.136800199979916,
+      "generation_s": 1.1021444000070915,
       "prompt_tokens": 1652,
       "completion_tokens": 25
     },
@@ -1632,8 +1632,8 @@
         "reference/simple_stmts#21",
         "library/contextlib#18"
       ],
-      "retrieval_s": 2.109253800008446,
-      "generation_s": 2.237307299976237,
+      "retrieval_s": 2.1777572000282817,
+      "generation_s": 2.3230039999471046,
       "prompt_tokens": 1757,
       "completion_tokens": 111
     },
@@ -1644,7 +1644,7 @@
       "answerable": true,
       "author": "draft",
       "answer": "I don't know. The documentation provided does not contain information about the evaluation of `-2**2`. The precedence and interpretation of the exponentiation operator in Python are not addressed in the given excerpts.",
-      "abstained": false,
+      "abstained": true,
       "gold_rank": null,
       "sources": [
         "tutorial/datastructures#23",
@@ -1653,8 +1653,8 @@
         "tutorial/introduction#8",
         "tutorial/introduction#2"
       ],
-      "retrieval_s": 2.2063268999918364,
-      "generation_s": 1.4650902000139467,
+      "retrieval_s": 2.1464146999642253,
+      "generation_s": 1.4200091999955475,
       "prompt_tokens": 2297,
       "completion_tokens": 41
     },
@@ -1674,8 +1674,8 @@
         "library/operator#7",
         "faq/programming#81"
       ],
-      "retrieval_s": 2.1836461999919266,
-      "generation_s": 1.5131145999766886,
+      "retrieval_s": 2.1701750000356697,
+      "generation_s": 1.5286037999903783,
       "prompt_tokens": 1775,
       "completion_tokens": 49
     },
@@ -1695,8 +1695,8 @@
         "reference/compound_stmts#8",
         "tutorial/errors#4"
       ],
-      "retrieval_s": 2.156675099977292,
-      "generation_s": 1.2759196999832056,
+      "retrieval_s": 2.1516369999735616,
+      "generation_s": 1.2188106999965385,
       "prompt_tokens": 2023,
       "completion_tokens": 26
     },
@@ -1716,8 +1716,8 @@
         "reference/expressions#16",
         "reference/expressions#15"
       ],
-      "retrieval_s": 2.2772081999573857,
-      "generation_s": 1.0500961000216193,
+      "retrieval_s": 2.268948500044644,
+      "generation_s": 1.0776874999864958,
       "prompt_tokens": 1494,
       "completion_tokens": 23
     },
@@ -1737,8 +1737,8 @@
         "builtins/stdtypes#34",
         "faq/programming#50"
       ],
-      "retrieval_s": 2.144791600003373,
-      "generation_s": 1.623583199980203,
+      "retrieval_s": 2.14083730004495,
+      "generation_s": 1.6245239999843761,
       "prompt_tokens": 1786,
       "completion_tokens": 58
     },
@@ -1758,8 +1758,8 @@
         "library/py_compile#3",
         "reference/import#21"
       ],
-      "retrieval_s": 2.1766691000084393,
-      "generation_s": 1.7214740999625064,
+      "retrieval_s": 2.1528652000124566,
+      "generation_s": 1.7443003000225872,
       "prompt_tokens": 1637,
       "completion_tokens": 70
     },
@@ -1779,8 +1779,8 @@
         "faq/programming#12",
         "faq/programming#13"
       ],
-      "retrieval_s": 2.1133089000359178,
-      "generation_s": 1.7213581000105478,
+      "retrieval_s": 2.127977899974212,
+      "generation_s": 1.7040945999906398,
       "prompt_tokens": 1617,
       "completion_tokens": 72
     },
@@ -1800,8 +1800,8 @@
         "glossary#25",
         "tutorial/controlflow#33"
       ],
-      "retrieval_s": 2.1204168999684043,
-      "generation_s": 0.8182992999791168,
+      "retrieval_s": 2.170523500011768,
+      "generation_s": 0.8878043000004254,
       "prompt_tokens": 1364,
       "completion_tokens": 14
     },
@@ -1821,8 +1821,8 @@
         "reference/datamodel#80",
         "howto/descriptor#18"
       ],
-      "retrieval_s": 2.12634999997681,
-      "generation_s": 1.9467430000077002,
+      "retrieval_s": 2.2208536000107415,
+      "generation_s": 1.9180937999626622,
       "prompt_tokens": 2057,
       "completion_tokens": 75
     },
@@ -1842,8 +1842,8 @@
         "reference/compound_stmts#6",
         "tutorial/errors#7"
       ],
-      "retrieval_s": 2.168275000003632,
-      "generation_s": 1.0625963999773376,
+      "retrieval_s": 2.312526700028684,
+      "generation_s": 1.007342399971094,
       "prompt_tokens": 1350,
       "completion_tokens": 27
     },
@@ -1863,8 +1863,8 @@
         "builtins/stdtypes#67",
         "builtins/stdtypes#65"
       ],
-      "retrieval_s": 2.150542100018356,
-      "generation_s": 1.4487412000307813,
+      "retrieval_s": 2.2549983999924734,
+      "generation_s": 1.4795847000204958,
       "prompt_tokens": 1670,
       "completion_tokens": 50
     },
@@ -1884,8 +1884,8 @@
         "howto/sorting#5",
         "faq/programming#55"
       ],
-      "retrieval_s": 2.1284839000436477,
-      "generation_s": 1.3466201999690384,
+      "retrieval_s": 2.191320599988103,
+      "generation_s": 1.3397678000037558,
       "prompt_tokens": 1493,
       "completion_tokens": 46
     },
@@ -1905,8 +1905,8 @@
         "glossary#24",
         "library/profile#5"
       ],
-      "retrieval_s": 2.1447107999701984,
-      "generation_s": 1.3128954999847338,
+      "retrieval_s": 2.1329478999832645,
+      "generation_s": 1.2593763999757357,
       "prompt_tokens": 1954,
       "completion_tokens": 32
     },
@@ -1926,8 +1926,8 @@
         "reference/datamodel#78",
         "reference/datamodel#76"
       ],
-      "retrieval_s": 2.526331399974879,
-      "generation_s": 1.4978301000082865,
+      "retrieval_s": 2.134969500009902,
+      "generation_s": 1.1065835999906994,
       "prompt_tokens": 1589,
       "completion_tokens": 30
     },
@@ -1947,8 +1947,8 @@
         "howto/regex#2",
         "howto/regex#5"
       ],
-      "retrieval_s": 2.4516043000039645,
-      "generation_s": 1.9533312999992631,
+      "retrieval_s": 2.1493203999707475,
+      "generation_s": 1.9827599000418559,
       "prompt_tokens": 2035,
       "completion_tokens": 75
     },
@@ -1968,8 +1968,8 @@
         "howto/enum#42",
         "library/enum#23"
       ],
-      "retrieval_s": 2.272234899981413,
-      "generation_s": 1.3890071000205353,
+      "retrieval_s": 2.203404799976852,
+      "generation_s": 1.446361500013154,
       "prompt_tokens": 1109,
       "completion_tokens": 61
     },
@@ -1989,8 +1989,8 @@
         "faq/programming#17",
         "library/calendar#13"
       ],
-      "retrieval_s": 2.1220778999850154,
-      "generation_s": 1.7822321000276133,
+      "retrieval_s": 2.1356320999911986,
+      "generation_s": 1.695980700023938,
       "prompt_tokens": 2276,
       "completion_tokens": 56
     },
@@ -2010,8 +2010,8 @@
         "tutorial/introduction#12",
         "library/pickle#31"
       ],
-      "retrieval_s": 2.1628889000276104,
-      "generation_s": 1.01031400001375,
+      "retrieval_s": 2.164709899981972,
+      "generation_s": 1.1090802000253461,
       "prompt_tokens": 1389,
       "completion_tokens": 29
     },
@@ -2031,8 +2031,8 @@
         "howto/free-threading-python#4",
         "howto/free-threading-python#0"
       ],
-      "retrieval_s": 2.1347037000232376,
-      "generation_s": 0.9160940999863669,
+      "retrieval_s": 2.1275849000085145,
+      "generation_s": 0.9543007999891415,
       "prompt_tokens": 1105,
       "completion_tokens": 27
     },
@@ -2052,8 +2052,8 @@
         "tutorial/datastructures#11",
         "faq/programming#48"
       ],
-      "retrieval_s": 2.1473425999865867,
-      "generation_s": 1.4588356000022031,
+      "retrieval_s": 2.194554599991534,
+      "generation_s": 1.5529768000124022,
       "prompt_tokens": 1382,
       "completion_tokens": 65
     },
@@ -2073,8 +2073,8 @@
         "faq/general#3",
         "library/idle#15"
       ],
-      "retrieval_s": 2.1106199999921955,
-      "generation_s": 1.25560759997461,
+      "retrieval_s": 2.1245458999765106,
+      "generation_s": 1.3136033000191674,
       "prompt_tokens": 1375,
       "completion_tokens": 49
     },
@@ -2094,8 +2094,8 @@
         "faq/programming#51",
         "reference/executionmodel#2"
       ],
-      "retrieval_s": 2.1716468000086024,
-      "generation_s": 1.755714299972169,
+      "retrieval_s": 2.204922800010536,
+      "generation_s": 1.8672222000313923,
       "prompt_tokens": 1699,
       "completion_tokens": 79
     },
@@ -2115,8 +2115,8 @@
         "library/errno#3",
         "library/errno#4"
       ],
-      "retrieval_s": 2.1361083000083454,
-      "generation_s": 1.6586347999982536,
+      "retrieval_s": 2.1265399000258185,
+      "generation_s": 1.6910534999915399,
       "prompt_tokens": 2462,
       "completion_tokens": 42
     },
@@ -2136,8 +2136,8 @@
         "reference/datamodel#70",
         "reference/datamodel#69"
       ],
-      "retrieval_s": 2.1759325000457466,
-      "generation_s": 1.8456176999607123,
+      "retrieval_s": 2.127669200010132,
+      "generation_s": 1.8374020000337623,
       "prompt_tokens": 1985,
       "completion_tokens": 68
     },
@@ -2157,8 +2157,8 @@
         "howto/free-threading-python#1",
         "howto/free-threading-python#8"
       ],
-      "retrieval_s": 2.1498533000121824,
-      "generation_s": 1.1971927999984473,
+      "retrieval_s": 2.1218039999948815,
+      "generation_s": 1.2381683000130579,
       "prompt_tokens": 741,
       "completion_tokens": 55
     },
@@ -2178,8 +2178,8 @@
         "reference/datamodel#25",
         "reference/expressions#21"
       ],
-      "retrieval_s": 2.1734744999557734,
-      "generation_s": 1.375088200031314,
+      "retrieval_s": 2.1139935000101104,
+      "generation_s": 1.299830199975986,
       "prompt_tokens": 1301,
       "completion_tokens": 55
     },
@@ -2199,8 +2199,8 @@
         "library/__main__#10",
         "faq/programming#78"
       ],
-      "retrieval_s": 2.1281478000455536,
-      "generation_s": 1.4742993999971077,
+      "retrieval_s": 2.3336301000090316,
+      "generation_s": 1.5961157000274397,
       "prompt_tokens": 1327,
       "completion_tokens": 68
     },
@@ -2220,8 +2220,8 @@
         "library/doctest#28",
         "library/doctest#38"
       ],
-      "retrieval_s": 2.1476278000045568,
-      "generation_s": 1.4479005000321195,
+      "retrieval_s": 2.259731099999044,
+      "generation_s": 1.4733098999713548,
       "prompt_tokens": 1925,
       "completion_tokens": 41
     },
@@ -2241,8 +2241,8 @@
         "library/pdb#4",
         "library/idle#8"
       ],
-      "retrieval_s": 2.266400199965574,
-      "generation_s": 1.7061247000237927,
+      "retrieval_s": 2.140599300037138,
+      "generation_s": 1.7566168999765068,
       "prompt_tokens": 1770,
       "completion_tokens": 68
     },
@@ -2262,8 +2262,8 @@
         "library/statistics#13",
         "library/decimal#14"
       ],
-      "retrieval_s": 2.174982300028205,
-      "generation_s": 1.9857742000021972,
+      "retrieval_s": 2.2889275000197813,
+      "generation_s": 1.9930295999511145,
       "prompt_tokens": 2191,
       "completion_tokens": 73
     },
@@ -2283,8 +2283,8 @@
         "library/unittest.mock#46",
         "library/unittest.mock#33"
       ],
-      "retrieval_s": 2.14050459995633,
-      "generation_s": 1.5836687000119127,
+      "retrieval_s": 2.1496295999968424,
+      "generation_s": 1.634484699985478,
       "prompt_tokens": 1825,
       "completion_tokens": 57
     },
@@ -2304,8 +2304,8 @@
         "library/pprint#5",
         "library/sys#20"
       ],
-      "retrieval_s": 2.182899700012058,
-      "generation_s": 1.0222558000241406,
+      "retrieval_s": 2.244677899987437,
+      "generation_s": 0.9813742999685928,
       "prompt_tokens": 1741,
       "completion_tokens": 26
     },
@@ -2325,8 +2325,8 @@
         "builtins/stdtypes#117",
         "builtins/stdtypes#118"
       ],
-      "retrieval_s": 2.10260450001806,
-      "generation_s": 1.4589454000233673,
+      "retrieval_s": 2.145761300052982,
+      "generation_s": 1.4490101999836043,
       "prompt_tokens": 2297,
       "completion_tokens": 32
     },
@@ -2346,8 +2346,8 @@
         "howto/sorting#8",
         "builtins/stdtypes#35"
       ],
-      "retrieval_s": 2.153378899965901,
-      "generation_s": 1.862016900035087,
+      "retrieval_s": 2.1474044999922626,
+      "generation_s": 1.8843780999886803,
       "prompt_tokens": 2111,
       "completion_tokens": 67
     },
@@ -2367,8 +2367,8 @@
         "library/pydoc#2",
         "library/asyncio-eventloop#17"
       ],
-      "retrieval_s": 2.152008200006094,
-      "generation_s": 0.9490788000402972,
+      "retrieval_s": 2.162138000014238,
+      "generation_s": 0.9086779999779537,
       "prompt_tokens": 1854,
       "completion_tokens": 6
     },
@@ -2379,7 +2379,7 @@
       "answerable": false,
       "author": "draft",
       "answer": "I don't know. The provided documentation excerpts are about using pip to manage packages in Python virtual environments, but they do not mention Poetry.",
-      "abstained": false,
+      "abstained": true,
       "gold_rank": null,
       "sources": [
         "tutorial/venv#3",
@@ -2388,8 +2388,8 @@
         "tutorial/modules#12",
         "tutorial/venv#4"
       ],
-      "retrieval_s": 2.1623775000334717,
-      "generation_s": 1.3255954000051133,
+      "retrieval_s": 2.1646856000297703,
+      "generation_s": 1.429160499945283,
       "prompt_tokens": 2297,
       "completion_tokens": 29
     },
@@ -2409,8 +2409,8 @@
         "library/multiprocessing.shared_memory#5",
         "builtins/stdtypes#15"
       ],
-      "retrieval_s": 2.148594700032845,
-      "generation_s": 1.0758761999895796,
+      "retrieval_s": 2.1288980999961495,
+      "generation_s": 1.00153050001245,
       "prompt_tokens": 2177,
       "completion_tokens": 6
     },
@@ -2430,8 +2430,8 @@
         "library/configparser#2",
         "library/tkinter#10"
       ],
-      "retrieval_s": 2.1335501999710687,
-      "generation_s": 1.1227358000469394,
+      "retrieval_s": 2.1640237999963574,
+      "generation_s": 1.071199300000444,
       "prompt_tokens": 2289,
       "completion_tokens": 6
     },
@@ -2451,8 +2451,8 @@
         "library/zlib#9",
         "library/wave#3"
       ],
-      "retrieval_s": 2.150126199994702,
-      "generation_s": 0.9293024000362493,
+      "retrieval_s": 2.138762000016868,
+      "generation_s": 0.9507626999984495,
       "prompt_tokens": 1940,
       "completion_tokens": 6
     },
@@ -2472,8 +2472,8 @@
         "library/wsgiref#8",
         "tutorial/venv#1"
       ],
-      "retrieval_s": 2.1396643999614753,
-      "generation_s": 1.0229737000190653,
+      "retrieval_s": 2.1357958000153303,
+      "generation_s": 1.0477421999676153,
       "prompt_tokens": 2089,
       "completion_tokens": 6
     },
@@ -2493,8 +2493,8 @@
         "library/datetime#31",
         "library/datetime#32"
       ],
-      "retrieval_s": 2.1396396000054665,
-      "generation_s": 0.9872659000102431,
+      "retrieval_s": 2.346596200019121,
+      "generation_s": 1.080050500051584,
       "prompt_tokens": 2151,
       "completion_tokens": 6
     },
@@ -2514,8 +2514,8 @@
         "library/index#1",
         "library/index#4"
       ],
-      "retrieval_s": 2.1163309999974445,
-      "generation_s": 0.9265587999834679,
+      "retrieval_s": 2.4240875999676064,
+      "generation_s": 1.0472763000288978,
       "prompt_tokens": 1800,
       "completion_tokens": 6
     }
