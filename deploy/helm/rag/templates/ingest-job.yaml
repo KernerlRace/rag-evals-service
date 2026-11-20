@@ -1,0 +1,36 @@
+# Chunk + embed the docs and load them into pgvector. The name includes the chunk size, so changing
+# chunkSize creates a new Job instead of trying to edit a finished one (Job specs are immutable).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-ingest-{{ .Values.chunkSize }}
+  labels:
+    {{- include "rag.labels" . | nindent 4 }}
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        {{- include "rag.labels" . | nindent 8 }}
+        app.kubernetes.io/component: ingest
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-db
+          image: {{ .Values.postgres.image }}
+          command:
+            - sh
+            - -c
+            - until pg_isready -h {{ .Release.Name }}-postgres -U rag; do sleep 2; done
+      containers:
+        - name: ingest
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python", "-m", "ragsvc.ingest", "--sizes", "{{ .Values.chunkSize }}", "--postgres"]
+          env:
+            - name: DATABASE_URL
+              value: {{ include "rag.dbUrl" . | quote }}
+          resources:
+            requests:
+              cpu: "1"
+              memory: 1Gi

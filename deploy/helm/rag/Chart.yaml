@@ -1,0 +1,6 @@
+apiVersion: v2
+name: rag
+description: RAG question answering over the Python docs, with a canary retriever config
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

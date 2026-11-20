@@ -1,0 +1,42 @@
+image:
+  repository: rag-evals-service
+  tag: latest
+  pullPolicy: IfNotPresent   # kind: the image is loaded with `kind load docker-image`, never pulled
+
+chunkSize: 256
+topK: 5
+
+llm:
+  backend: ollama
+  # Ollama runs on the Windows host with the GPU; Docker Desktop resolves this name from inside kind.
+  ollamaUrl: http://host.docker.internal:11434
+  ollamaModel: qwen2.5:7b-instruct
+
+# The current production config.
+stable:
+  replicas: 3
+  retriever: hybrid
+
+# A second retriever config that gets a slice of live traffic. Both Deployments carry the label
+# app.kubernetes.io/component=api and the Service selects only on that, so traffic splits roughly by
+# replica count: 3 stable + 1 canary = ~25% canary.
+canary:
+  enabled: false
+  replicas: 1
+  retriever: hybrid_rerank
+
+resources:
+  requests: {cpu: 250m, memory: 768Mi}
+  limits: {memory: 1536Mi}
+
+service:
+  nodePort: 30080
+
+postgres:
+  image: pgvector/pgvector:pg17
+  password: rag   # local demo only; a real deployment reads this from a Secret
+  storage: 1Gi
+
+monitoring:
+  podMonitor: true   # needs the kube-prometheus-stack CRDs
+  dashboard: true    # ConfigMap picked up by the Grafana sidecar

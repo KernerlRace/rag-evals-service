@@ -1,0 +1,22 @@
+# Small footprint for a laptop: no Alertmanager, short retention, 10 s scrapes.
+alertmanager:
+  enabled: false
+prometheus:
+  service:
+    type: NodePort
+    nodePort: 30090
+  prometheusSpec:
+    retention: 2d
+    scrapeInterval: 10s
+    # Pick up PodMonitors from any release, not only ones labelled for this Helm release.
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+grafana:
+  adminPassword: admin   # local only
+  service:
+    type: NodePort
+    nodePort: 30300
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: ALL

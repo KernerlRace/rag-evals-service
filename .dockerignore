@@ -1,0 +1,9 @@
+.venv
+.git
+data/index
+eval
+tests
+deploy
+infra
+docs
+**/__pycache__

@@ -1,0 +1,31 @@
+{{- if .Values.monitoring.podMonitor }}
+# Scrape every API pod directly (not through the Service), so stable and canary are both seen.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    {{- include "rag.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: api
+  podMetricsEndpoints:
+    - port: http
+      path: /metrics
+      interval: 10s
+{{- end }}
+{{- if .Values.monitoring.dashboard }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-grafana-dashboard
+  labels:
+    {{- include "rag.labels" . | nindent 4 }}
+    grafana_dashboard: "1"   # the Grafana sidecar loads every ConfigMap with this label
+data:
+  rag.json: |-
+{{ .Files.Get "dashboards/rag.json" | indent 4 }}
+{{- end }}

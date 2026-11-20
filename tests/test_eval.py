@@ -56,3 +56,23 @@ def test_every_golden_passage_is_in_the_docs():
     assert problems == []
     assert len({it.id for it in items}) == len(items), "duplicate ids"
     assert sum(not it.answerable for it in items) >= 5, "keep some unanswerable questions"
+
+
+def test_parse_verdict_handles_json_and_junk():
+    from eval.judge import parse_verdict
+
+    assert parse_verdict('{"reason": "matches", "verdict": "correct"}') == 1
+    assert parse_verdict('{"reason": "wrong default", "verdict": "incorrect"}') == 0
+    assert parse_verdict("The answer is INCORRECT.") == 0
+    assert parse_verdict("no idea") is None
+
+
+def test_judge_agreement_counts_the_confusion_matrix():
+    from eval.judge import agreement
+
+    judge = {"a": 1, "b": 1, "c": 0, "d": 0}
+    hand = {"a": 1, "b": 0, "c": 0, "d": 0, "e": 1}  # "e" has no judge verdict and is ignored
+    out = agreement(judge, hand)
+    assert out["n"] == 4
+    assert out["confusion"] == {"hand1_judge1": 1, "hand1_judge0": 0, "hand0_judge1": 1, "hand0_judge0": 2}
+    assert out["agreement"]["mean"] == 0.75
