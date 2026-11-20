@@ -1,0 +1,44 @@
+[project]
+name = "rag-evals-service"
+version = "0.1.0"
+description = "Question answering over the Python docs, with retrieval ablations, an LLM judge checked against hand labels, and a Kubernetes deployment"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "fastembed>=0.7",
+    "httpx>=0.28",
+    "numpy>=2",
+    "pgvector>=0.4",
+    "prometheus-client>=0.21",
+    "psycopg[binary]>=3.2",
+    "uvicorn>=0.32",
+]
+
+[project.optional-dependencies]
+bedrock = ["boto3>=1.35"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["uv_build>=0.8,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = "ragsvc"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
