@@ -18,6 +18,8 @@ chatbot. It has four parts:
   the weakest part of the evaluation; the [judge section](#how-far-the-llm-judge-can-be-trusted) explains why.
 * On my own 30 hand-written questions the strict judge scores the system much lower than on the LLM-drafted ones
   (0.53 vs 0.76).
+* Deployed as a canary on Kubernetes (kind), the reranker was **rolled back** automatically: p95 latency was 5.0 s
+  against 2.5 s for the stable version. The service also ran once on AWS Fargate and was destroyed the same day.
 
 ```mermaid
 flowchart LR
@@ -305,8 +307,27 @@ How to read the dashboard:
 * **From 21:45:** stable + canary. The canary's p95 sits around 5 s against stable's 2.5 s, and the extra time is
   all in retrieval (the reranker), not in generation.
 
-**AWS** (`infra/aws/`): Terraform for one ECS Fargate task with Bedrock, without a load balancer, NAT or EKS. Cost
-and teardown are in [infra/aws/README.md](infra/aws/README.md). *Not yet applied.*
+## AWS: one Fargate task, applied and destroyed
+
+`infra/aws/` is Terraform for one ECS Fargate task (Postgres, ingest and API containers), without a load balancer,
+NAT gateway or EKS. Cost and teardown are in [infra/aws/README.md](infra/aws/README.md).
+
+**Result (2026-11-21, eu-north-1).**
+
+* `terraform apply` created 10 resources, and the image went to ECR.
+* The task became healthy 36 minutes after start, almost all of it the ingest container embedding 6,363 chunks on
+  1 vCPU. `/ask` answered from the cloud with cited sources.
+* `terraform destroy` removed all 10 resources the same evening, and no ECS cluster, ECR repository or network
+  interface was left. Cost: well under $0.10 of free-plan credits.
+
+Two honest caveats:
+
+* **Bedrock was not available on the AWS free plan.** Every call returned "Operation not allowed", in eu-west-1
+  and eu-north-1. So the cloud run used `llm_backend=extractive`: real retrieval over pgvector, with the answer
+  taken from the top passage. The Bedrock backend (`ragsvc/llm.py`, Converse API) is written but has never run
+  against the real service, so treat it as untested.
+* **36 minutes to start is too slow for anything but a demo.** The fix is to embed once at build time (or keep the
+  vectors in S3) instead of on every task start.
 
 ## Licence
 

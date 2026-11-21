@@ -77,3 +77,14 @@ Startup takes a few minutes, because ingestion embeds the docs on 1 vCPU before 
   * `force_delete` on the ECR repository means pushed images are deleted too.
   * The log group is managed by Terraform, so it is removed as well.
   * Afterwards, check the console for anything tagged `project = rag-evals-service`; there should be nothing left.
+
+## What happened when it was applied (2026-11-21)
+
+* **The free plan blocks Bedrock.** Every call returned "Operation not allowed", so the run used
+  `-var llm_backend=extractive`.
+* **The free-plan project is pinned to eu-north-1,** hence the default region.
+* **The first tasks were OOM-killed** while embedding with batches of 64. Batches of 16 fit in 2 GB.
+* **Startup took 36 minutes,** spent on embedding 6,363 chunks on 1 vCPU.
+* **Docker on Windows could not store the ECR login** in the Windows credential manager. The push used a temporary
+  `DOCKER_CONFIG` with no `credsStore`.
+* **Destroy removed all 10 resources.**
