@@ -26,10 +26,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("answers", type=Path)
     parser.add_argument("--n", type=int, default=40)
+    parser.add_argument(
+        "--fresh", action="store_true", help="skip questions already labelled in other runs (a clean held-out check)"
+    )
     args = parser.parse_args()
 
     run = json.loads(args.answers.read_text(encoding="utf-8"))
     rows = [r for r in run["rows"] if r["answerable"]]
+    if args.fresh and LABELS.exists():
+        with open(LABELS, encoding="utf-8", newline="") as f:
+            seen = {r["id"] for r in csv.DictReader(f) if r["answers_file"] != args.answers.name}
+        rows = [r for r in rows if r["id"] not in seen]
     sample = random.Random(0).sample(rows, min(args.n, len(rows)))
     done = load_hand_labels(args.answers.name)
     todo = [r for r in sample if r["id"] not in done]

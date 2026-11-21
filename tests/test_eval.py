@@ -88,3 +88,13 @@ def test_hand_labels_belong_to_one_answers_run(tmp_path):
     )
     assert load_hand_labels("answers_a.json", path) == {"q001": 1}
     assert load_hand_labels("answers_b.json", path) == {"q001": 0}
+
+
+def test_v3_verdict_is_combined_by_code():
+    from eval.judge import parse_verdict
+
+    ok = '{"has_key_fact": true, "answers_every_part": true, "contradicts": false, "wrong_name_or_code": false}'
+    assert parse_verdict(ok, "v3") == 1
+    assert parse_verdict(ok.replace('"contradicts": false', '"contradicts": true'), "v3") == 0
+    assert parse_verdict(ok.replace('"answers_every_part": true', '"answers_every_part": false'), "v3") == 0
+    assert parse_verdict('{"has_key_fact": "yes"}', "v3") is None

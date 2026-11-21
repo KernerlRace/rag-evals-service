@@ -21,26 +21,67 @@ from ragsvc.llm import OllamaLLM
 
 LABELS = Path(__file__).resolve().parent / "labels" / "hand_labels.csv"
 
-JUDGE_SYSTEM = (
+# Three versions of the judge, kept side by side so they can all be scored against the same hand labels.
+# v1: the first prompt. v2 and v3 were written on 2026-11-21 after reading v1's 7 disagreements with the first 40
+# hand labels, as general rules fixed BEFORE re-scoring; their agreement on those 40 is therefore optimistic, and the
+# 20 fresh labels (questions never seen while writing the rules, answers from another run) are the clean check.
+_INTRO = (
     "You are grading answers to questions about the Python programming language. "
     "You get a question, a reference answer written by an expert, and a candidate answer. "
-    "The candidate is CORRECT if it states the key fact(s) of the reference answer and says nothing that "
+)
+PROMPTS = {
+    "v1": _INTRO
+    + "The candidate is CORRECT if it states the key fact(s) of the reference answer and says nothing that "
     "contradicts it. Extra details are fine if they are not wrong. Different wording is fine. Citation markers "
     "like [1] are fine. The candidate is INCORRECT if it misses the key fact, contradicts the reference, or says "
     "it does not know. "
-    'Reply with JSON only: {"reason": "<one short sentence>", "verdict": "correct" or "incorrect"}'
-)
+    'Reply with JSON only: {"reason": "<one short sentence>", "verdict": "correct" or "incorrect"}',
+    # v2: the rules as one list; the model decides.
+    "v2": _INTRO + "Grade the substance, not the wording. Rules:\n"
+    "1. The candidate must state the key fact(s) of the reference. If the question asks more than one thing "
+    "(for example 'what is X and how do I check it'), every part must be answered.\n"
+    "2. If the question asks WHY, the candidate must give the same reason as the reference. Only describing "
+    "what happens, or giving a different mechanism, is incorrect.\n"
+    "3. Concrete names, code and values in the candidate must be right as written: naming a different function, "
+    "or giving code or an argument that would fail or do something else, is incorrect.\n"
+    "4. Do NOT mark incorrect for: extra details that are true; statements that are more specific or more "
+    "complete than the reference but consistent with it; different wording or framing that gives the same "
+    "practical advice; citation markers like [1].\n"
+    "5. Saying it does not know is incorrect.\n"
+    "First check each rule in the reason, then decide. "
+    'Reply with JSON only: {"reason": "<one or two short sentences>", "verdict": "correct" or "incorrect"}',
+    # v3: the same rules as narrow yes/no questions; code combines them (v2 made llama3.1 8B nitpick extra details).
+    "v3": _INTRO + "Answer four yes/no questions about the candidate.\n"
+    "has_key_fact: does it state the key fact of the reference? For a WHY question the key fact is the reason.\n"
+    "answers_every_part: if the question asks more than one thing, does it answer each of them? "
+    "(true if the question asks one thing)\n"
+    "contradicts: does it state something that cannot be true if the reference is true? Information the reference "
+    "does not mention is NOT a contradiction, and neither is more detail or different wording.\n"
+    "wrong_name_or_code: does it name a different function/class/option than the right one, or give code or a "
+    "value that would fail or do something else?\n"
+    'Reply with JSON only: {"reason": "<one short sentence>", "has_key_fact": true/false, '
+    '"answers_every_part": true/false, "contradicts": true/false, "wrong_name_or_code": true/false}',
+}
+DEFAULT_PROMPT = "v1"
 
 
 def judge_prompt(question: str, reference: str, candidate: str) -> str:
     return f"Question: {question}\n\nReference answer: {reference}\n\nCandidate answer: {candidate}"
 
 
-def parse_verdict(text: str) -> int | None:
+def parse_verdict(text: str, version: str = "v1") -> int | None:
+    """1 correct, 0 incorrect, None if the judge's reply cannot be read."""
     try:
-        verdict = str(json.loads(text).get("verdict", "")).strip().lower()
-    except (json.JSONDecodeError, AttributeError):
-        verdict = text.lower()
+        data = json.loads(text)
+    except json.JSONDecodeError:
+        data = None
+    if version == "v3":
+        keys = ("has_key_fact", "answers_every_part", "contradicts", "wrong_name_or_code")
+        if not isinstance(data, dict) or not all(isinstance(data.get(k), bool) for k in keys):
+            return None
+        ok = data["has_key_fact"] and data["answers_every_part"] and not data["contradicts"]
+        return int(ok and not data["wrong_name_or_code"])
+    verdict = str(data.get("verdict", "")).strip().lower() if isinstance(data, dict) else text.lower()
     if "incorrect" in verdict:
         return 0
     if "correct" in verdict:
@@ -84,6 +125,7 @@ def main() -> None:
     parser.add_argument("answers", type=Path)
     parser.add_argument("--judge-model", default="llama3.1:8b")
     parser.add_argument("--ollama-url", default="http://localhost:11434")
+    parser.add_argument("--prompt", choices=sorted(PROMPTS), default=DEFAULT_PROMPT)
     args = parser.parse_args()
 
     run = json.loads(args.answers.read_text(encoding="utf-8"))
@@ -95,9 +137,9 @@ def main() -> None:
             verdicts[row["id"]] = int(row["abstained"])
             reasons[row["id"]] = "rule: unanswerable, correct iff abstained"
             continue
-        out = judge.generate(judge_prompt(row["question"], row["reference_answer"], row["answer"]),
-                             system=JUDGE_SYSTEM, json_mode=True)
-        v = parse_verdict(out.text)
+        prompt = judge_prompt(row["question"], row["reference_answer"], row["answer"])
+        out = judge.generate(prompt, system=PROMPTS[args.prompt], json_mode=True)
+        v = parse_verdict(out.text, args.prompt)
         verdicts[row["id"]] = 0 if v is None else v  # an unparseable verdict counts against the answer
         reasons[row["id"]] = out.text
         print(f"{row['id']} {'OK ' if v else 'BAD'} {out.text[:110]}")
@@ -113,6 +155,7 @@ def main() -> None:
         "answers_file": args.answers.name,
         "config": run["config"],
         "judge_model": args.judge_model,
+        "judge_prompt": args.prompt,
         "judged_accuracy": bootstrap_ci([verdicts[i] for i in answerable]),
         "judged_accuracy_by_author": by_author,
         "unanswerable_correct": bootstrap_ci([verdicts[r["id"]] for r in run["rows"] if not r["answerable"]]),
@@ -122,7 +165,7 @@ def main() -> None:
     }
     path = save_result("judge", result)
     print(f"saved {path}")
-    print("judged accuracy (answerable):", fmt_ci(result["judged_accuracy"]))
+    print(f"prompt {args.prompt}, judged accuracy (answerable):", fmt_ci(result["judged_accuracy"]))
     if agree:
         print(f"judge vs my labels on {agree['n']}: agreement {fmt_ci(agree['agreement'])}, "
               f"kappa {agree['cohen_kappa']:.2f}, confusion {agree['confusion']}")
