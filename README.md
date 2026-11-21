@@ -8,12 +8,16 @@ chatbot. It has four parts:
 * an LLM judge checked against hand labels;
 * latency measured per stage.
 
-**Results in one paragraph.** Hybrid retrieval (BM25 + dense vectors, reciprocal rank fusion) finds the gold
-passage in the top 5 for 84% of questions, against 70% for BM25 alone, and the gain is significant on a paired
-bootstrap. A cross-encoder reranker *lowers* that retrieval metric to 76%, yet *raises* judged answer accuracy by
-6–7 points. A single gold passage is too narrow a definition of "relevant". Answer accuracy for qwen2.5 7B is
-between 0.75 and 0.86, depending on which judge prompt you believe. The judge is the weakest part of the evaluation,
-and the [judge section](#how-far-the-llm-judge-can-be-trusted) explains why.
+**Results in one paragraph** (all 140 golden questions):
+
+* Hybrid retrieval (BM25 + dense vectors, reciprocal rank fusion) finds the gold passage in the top 5 for 81% of
+  questions, against 69% for BM25 alone. The gain is significant on a paired bootstrap.
+* A cross-encoder reranker *lowers* that retrieval metric to 76%, yet *raises* judged answer accuracy by 6–9
+  points. A single gold passage is too narrow a definition of "relevant".
+* Answer accuracy for qwen2.5 7B is between 0.71 and 0.84, depending on which judge prompt you believe. The judge is
+  the weakest part of the evaluation; the [judge section](#how-far-the-llm-judge-can-be-trusted) explains why.
+* On my own 30 hand-written questions the strict judge scores the system much lower than on the LLM-drafted ones
+  (0.53 vs 0.76).
 
 ```mermaid
 flowchart LR
@@ -41,7 +45,9 @@ flowchart LR
   * 110 answerable questions, each with a reference answer and the exact gold passage. Every passage is located
     inside the docs automatically, and the build fails if one is not found.
   * 8 unanswerable questions (the answer is not in the docs), where the only correct answer is "I don't know".
-  * The draft was written with an LLM and is being reviewed by hand (`status` column).
+  * 30 more answerable questions I wrote myself (`author=mykyta`), mostly "why" and two-part questions about
+    real Python gotchas. Their passages were found and located the same way.
+  * The first 110 were drafted with an LLM and are being reviewed by hand (`status` column).
 * **Relevance:** a retrieved chunk counts as relevant if it covers at least 50% of the gold passage's characters.
 
 ## Results
@@ -108,6 +114,41 @@ after the fix.
   to optimise.**
 * **Where the time goes.** With hybrid, almost all of the 1.4 s is generation. With hybrid + rerank, the reranker
   on CPU adds 2.2 s of the 3.6 s. In production the reranker would run on the GPU; here the GPU is busy with the LLM.
+
+### All 140 questions, and hand-written vs LLM-drafted
+
+The tables above cover the 110 LLM-drafted questions. Adding my 30 hand-written ones (run 2026-11-21, same
+settings):
+
+| Setup | All 140 | 110 drafted | 30 hand-written |
+|---|---|---|---|
+| hit@5, BM25 (size 256) | 0.686 [0.607, 0.757] | 0.700 | 0.633 [0.467, 0.800] |
+| hit@5, hybrid | 0.814 [0.750, 0.879] | 0.836 | 0.733 [0.567, 0.867] |
+| hit@5, hybrid + rerank | 0.757 [0.686, 0.829] | 0.755 | 0.767 [0.600, 0.900] |
+| Accuracy, qwen + hybrid, judge v1 | 0.843 [0.779, 0.900] | 0.845 | 0.833 [0.700, 0.967] |
+| Accuracy, qwen + hybrid, judge v3 | 0.714 [0.636, 0.786] | 0.764 | **0.533** [0.367, 0.700] |
+| Accuracy, qwen + rerank, judge v1 | 0.929 [0.886, 0.971] | 0.927 | 0.933 [0.833, 1.000] |
+| Accuracy, qwen + rerank, judge v3 | 0.779 [0.707, 0.843] | 0.800 | 0.700 [0.533, 0.867] |
+
+* **The conclusions hold on 140 questions.**
+  * Hybrid vs BM25 hit@5: +0.129 [0.071, 0.193].
+  * 128 vs 256 words at equal context: still better for BM25, dense and rerank. 512 words: still worse for dense,
+    hybrid and rerank.
+  * Rerank vs hybrid accuracy: +0.086 [0.036, 0.143] with judge v1, +0.064 [−0.007, 0.136] with judge v3.
+  * Unanswerable questions: 8 of 8 refused correctly. False refusals on answerable questions: 6.4%.
+* **Hand-written questions are harder,** but only the strict judge sees it.
+  * Under v3, accuracy on my 30 questions is 0.53, against 0.76 on the drafted ones. Under v1 the two groups are
+    the same (0.83 vs 0.85).
+  * My questions are mostly "why … and how should I …". v3 checks that every part is answered and that a "why" is
+    answered with the right reason; v1 does not.
+  * So either v3 catches real half-answers that v1 misses, or it is harsher on long questions. Telling the two
+    apart needs hand labels on these 30 answers.
+  * The retrieval gap points the same way: BM25 drops from 0.70 to 0.63 and dense does not (0.73 → 0.77).
+    LLM-drafted questions share more words with their source passage. That fits the general warning that an
+    LLM-written test set flatters lexical retrieval.
+  * With n = 30 none of these gaps is significant on its own; the intervals overlap.
+* The latency of the rerank run on 140 questions (p50 6.3 s) is not reported. A CPU retrieval benchmark ran at the
+  same time and slowed the CPU reranker. The clean numbers are in the table above.
 
 ## How far the LLM judge can be trusted
 
