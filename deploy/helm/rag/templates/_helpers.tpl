@@ -32,6 +32,20 @@ spec:
         app.kubernetes.io/component: api
         rag/variant: {{ .variant }}
     spec:
+      # The API loads all chunks at startup, so it waits until the ingest Job has filled the table
+      # instead of crash-looping while Postgres starts and the docs are embedded.
+      initContainers:
+        - name: wait-for-index
+          image: {{ $root.Values.postgres.image }}
+          env:
+            - name: PGPASSWORD
+              value: {{ $root.Values.postgres.password | quote }}
+          command:
+            - sh
+            - -c
+            - >-
+              until [ "$(psql -h {{ $root.Release.Name }}-postgres -U rag -d rag -tAc
+              'select count(*) from chunks' 2>/dev/null || echo 0)" -gt 0 ]; do sleep 5; done
       containers:
         - name: api
           image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag }}"

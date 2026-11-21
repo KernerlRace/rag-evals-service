@@ -1,7 +1,7 @@
 variable "region" {
-  description = "AWS region. eu-west-1 (Ireland): Fargate and Bedrock both available, cheaper than London."
+  description = "AWS region. eu-north-1 (Stockholm): the region the AWS free-plan project is pinned to; Fargate and Bedrock (EU inference profile) are available."
   type        = string
-  default     = "eu-west-1"
+  default     = "eu-north-1"
 }
 
 variable "allowed_cidr" {
@@ -41,4 +41,14 @@ variable "desired_count" {
   description = "Set to 0 to stop paying for compute but keep everything else (ECR image, roles)."
   type        = number
   default     = 1
+}
+
+variable "llm_backend" {
+  description = "bedrock, or extractive (no LLM: returns the retrieved passage) where Bedrock is not available, e.g. on the AWS free plan."
+  type        = string
+  default     = "bedrock"
+  validation {
+    condition     = contains(["bedrock", "extractive"], var.llm_backend)
+    error_message = "llm_backend must be bedrock or extractive."
+  }
 }

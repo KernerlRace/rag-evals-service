@@ -31,6 +31,6 @@ def load_settings() -> Settings:
         ollama_url=env("OLLAMA_URL", "http://localhost:11434"),
         ollama_model=env("OLLAMA_MODEL", "qwen2.5:7b-instruct"),
         bedrock_model_id=env("BEDROCK_MODEL_ID", "eu.amazon.nova-micro-v1:0"),
-        aws_region=env("AWS_REGION", "eu-west-1"),
+        aws_region=env("AWS_REGION", "eu-north-1"),
         variant=env("RAG_VARIANT", "stable"),
     )

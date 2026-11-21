@@ -206,6 +206,17 @@ What this does and does not show:
 * **A golden-set reference answer was wrong.** The `bisect.insort` reference described `insort_left`, so a wrong
   answer looked right. Found while hand-labelling and fixed. LLM-drafted references need the same review as LLM
   answers.
+* **Batch sizes that worked on my desktop OOM-killed containers.** Embedding 64 chunks of up to 512 tokens at
+  once killed the ingest container in a 2 GB Fargate task, and reranking 30 passages in one batch got the canary pod
+  OOM-killed at its 1.5 GiB limit. Attention memory grows with batch × length². Batches of 16 (embedding) and 8
+  (reranking) fit and are barely slower.
+* **The first canary got no traffic.** kube-proxy balances *connections*, not requests, and the load generator
+  reused one keep-alive connection, so every request landed on the same stable pod. It now opens a connection per
+  request.
+* **The API crash-looped on Kubernetes** while Postgres started and the docs were being embedded. It now has an
+  init container that waits until the chunks table is filled.
+* **kind would not start on this machine.** Docker Desktop's WSL kernel still uses cgroup v1, and recent kubelets
+  refuse it, so the node image is pinned to Kubernetes 1.34.
 * **The cross-encoder made retrieval worse on these docs.** It was trained on web search queries (MS MARCO). I keep
   it as an option because it still improves the answers, for the reason given above.
 
@@ -244,14 +255,55 @@ Configuration is through environment variables (`ragsvc/config.py`):
 | `RAG_LLM_BACKEND` | `ollama` | `ollama`, `bedrock` or `extractive` |
 | `RAG_STORE` | `postgres` | `postgres`, or `memory` for tests |
 
-**Kubernetes** (`deploy/`). *Not yet run end to end; screenshots will follow.*
+## Kubernetes: a canary of the reranker, on kind
 
-* A Helm chart for kind with:
-  * Postgres and the ingest Job;
-  * a stable and a canary Deployment behind one Service (traffic split 3:1 by replica count);
-  * a PodMonitor and a Grafana dashboard.
-* `ops/canary_check.py` queries Prometheus and decides whether to promote the canary, roll it back or wait. It
-  compares error rate, p95 latency and abstain rate against the stable version.
+`deploy/` holds a Helm chart for [kind](https://kind.sigs.k8s.io) with these parts:
+
+* Postgres + pgvector, plus the ingest Job.
+* A **stable** Deployment (`hybrid`, 3 replicas) and a **canary** Deployment (`hybrid_rerank`, 1 replica) behind
+  one Service. Traffic splits by replica count, so the canary gets about 25%.
+* A PodMonitor for Prometheus and a Grafana dashboard (kube-prometheus-stack).
+
+`ops/canary_check.py` reads Prometheus and returns PROMOTE, ROLLBACK or WAIT. The canary is promoted only if all
+of these hold:
+
+* its error rate is at most stable's + 1 point;
+* its p95 latency is at most 1.25 × stable's + 0.5 s;
+* its "I don't know" rate is at most stable's + 10 points;
+* it has served at least 30 requests.
+
+```bash
+kind create cluster --config deploy/kind/cluster.yaml
+kind load docker-image rag-evals-service:latest --name rag
+helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace \
+  -f deploy/monitoring/kube-prometheus-stack.yaml
+helm install rag deploy/helm/rag -n rag --create-namespace --set canary.enabled=true
+uv run python -m ops.load --url http://localhost:30080 --rounds 2 --workers 1 --pause 2
+uv run python -m ops.canary_check        # Grafana: http://localhost:30300 (admin/admin, local only)
+```
+
+**Result (2026-11-21).** After 296 requests, 62 of them (21%) to the canary, `canary_check` said:
+
+```
+canary  requests    50  errors   0.0%  p95   4.98s  abstained  12.2%
+stable  requests   171  errors   0.0%  p95   2.47s  abstained  11.3%
+ROLLBACK: p95 4.98s vs stable 2.47s
+```
+
+That is the right call by the rule, and it matches the offline evaluation. The reranker answers better (+6–9
+points), but on CPU it adds about 2.5 s at p95, which breaks the latency budget. To ship it, the reranker would
+need a GPU or fewer candidates (`rerank_top`), and then a second canary.
+
+![Grafana during the canary](docs/grafana-canary.png)
+
+How to read the dashboard:
+
+* **21:17–21:33:** all traffic on stable. From 21:23 the canary was up, but the load generator's single
+  keep-alive connection pinned every request to one pod.
+* **~21:40:** the first canary attempt. Its pod was OOM-killed on the first reranked request (see "what went
+  wrong").
+* **From 21:45:** stable + canary. The canary's p95 sits around 5 s against stable's 2.5 s, and the extra time is
+  all in retrieval (the reranker), not in generation.
 
 **AWS** (`infra/aws/`): Terraform for one ECS Fargate task with Bedrock, without a load balancer, NAT or EKS. Cost
 and teardown are in [infra/aws/README.md](infra/aws/README.md). *Not yet applied.*

@@ -19,17 +19,24 @@ def main() -> None:
     parser.add_argument("--url", default="http://localhost:30080")
     parser.add_argument("--rounds", type=int, default=1)
     parser.add_argument("--workers", type=int, default=2)  # one GPU behind Ollama: more workers only queue
+    parser.add_argument("--pause", type=float, default=0.0, help="seconds each worker waits between requests")
     args = parser.parse_args()
 
     questions = [it.question for it in golden.load()] * args.rounds
     random.Random(0).shuffle(questions)
-    client = httpx.Client(base_url=args.url, timeout=180)
+    # A new TCP connection per request: kube-proxy balances connections, not requests, so one keep-alive
+    # connection would send every request to the same pod and the canary would never see traffic.
+    client = httpx.Client(base_url=args.url, timeout=180, headers={"Connection": "close"})
     seen = Counter()
 
     def ask(q: str) -> None:
-        r = client.post("/ask", json={"question": q})
-        variant = r.json().get("variant", "?") if r.status_code == 200 else f"http {r.status_code}"
+        try:
+            r = client.post("/ask", json={"question": q})
+            variant = r.json().get("variant", "?") if r.status_code == 200 else f"http {r.status_code}"
+        except httpx.TransportError as e:  # a pod dying mid-request is a result to count, not a reason to stop
+            variant = type(e).__name__
         seen[variant] += 1
+        time.sleep(args.pause)  # keeps the GPU below 100% duty cycle on a desktop card
 
     t = time.perf_counter()
     with ThreadPoolExecutor(args.workers) as pool:

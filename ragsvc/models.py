@@ -22,7 +22,9 @@ class Embedder:
         self.model = TextEmbedding(model_name=model_name)
         self.dim = 384
 
-    def embed_documents(self, texts: list[str], batch_size: int = 64) -> np.ndarray:
+    def embed_documents(self, texts: list[str], batch_size: int = 16) -> np.ndarray:
+        # Attention memory grows with batch x length^2: batch 64 of 512-token chunks ran a 2 GB Fargate task out
+        # of memory. 16 fits and is barely slower on CPU.
         vectors = np.array(list(self.model.embed(texts, batch_size=batch_size)), dtype=np.float32)
         return _unit(vectors)
 
@@ -37,7 +39,9 @@ class Reranker:
         self.model = TextCrossEncoder(model_name=model_name)
 
     def scores(self, query: str, texts: list[str]) -> np.ndarray:
-        return np.array(list(self.model.rerank(query, texts)), dtype=np.float32)
+        # Small batches for the same reason as embed_documents: 30 long passages in one batch got the canary pod
+        # OOM-killed at its 1.5 GiB limit.
+        return np.array(list(self.model.rerank(query, texts, batch_size=8)), dtype=np.float32)
 
 
 class HashEmbedder:

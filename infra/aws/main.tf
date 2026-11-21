@@ -187,7 +187,7 @@ resource "aws_ecs_task_definition" "rag" {
         { name = "RAG_STORE", value = "postgres" },
         { name = "DATABASE_URL", value = local.database_url },
         { name = "RAG_RETRIEVER", value = var.retriever },
-        { name = "RAG_LLM_BACKEND", value = "bedrock" },
+        { name = "RAG_LLM_BACKEND", value = var.llm_backend },
         { name = "BEDROCK_MODEL_ID", value = var.bedrock_model_id },
         { name = "AWS_REGION", value = var.region },
         { name = "RAG_VARIANT", value = "aws" },

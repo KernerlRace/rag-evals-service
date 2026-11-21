@@ -23,7 +23,7 @@ Each of these bills by the hour whether it is used or not, so none of them is cr
 
 App Runner would have been simpler, but it is closed to new customers since 2026-04-30.
 
-## Cost (eu-west-1, approximate list prices; check the AWS pricing pages before applying)
+## Cost (eu-north-1, approximate list prices; check the AWS pricing pages before applying)
 
 | Item | Rate | Per hour | Per month if left on (730 h) |
 |---|---|---|---|
@@ -43,7 +43,7 @@ left running, so **destroy it the same day**. Before applying, set an AWS Budget
 ## Deploy
 
 Prerequisites: the AWS CLI logged in, Docker, Terraform ≥ 1.6, and Bedrock model access for Nova Micro enabled in
-the console if the account requires it (eu-west-1).
+the console if the account requires it (eu-north-1).
 
 ```bash
 cd infra/aws
@@ -52,12 +52,12 @@ terraform apply -var "allowed_cidr=$(curl -s https://checkip.amazonaws.com)/32"
 
 # build and push the image to the ECR repository Terraform created
 REPO=$(terraform output -raw ecr_repository_url)
-aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin "${REPO%%/*}"
+aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin "${REPO%%/*}"
 docker build -t "$REPO:latest" ../..
 docker push "$REPO:latest"
 
 # start the task now that the image exists, then find its public IP
-aws ecs update-service --region eu-west-1 --cluster rag-evals-service --service rag-evals-service --force-new-deployment
+aws ecs update-service --region eu-north-1 --cluster rag-evals-service --service rag-evals-service --force-new-deployment
 terraform output -raw find_public_ip | sh
 curl -s http://<ip>:8000/health
 ```

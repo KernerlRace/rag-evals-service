@@ -9,3 +9,4 @@ eval/runs/
 *.tfstate*
 *.tfplan
 .cache/
+tfplan
