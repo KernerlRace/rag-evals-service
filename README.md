@@ -152,6 +152,21 @@ settings):
 * The latency of the rerank run on 140 questions (p50 6.3 s) is not reported. A CPU retrieval benchmark ran at the
   same time and slowed the CPU reranker. The clean numbers are in the table above.
 
+### Retrieval quality as a CI check
+
+`eval/gate.py` runs in GitHub Actions on every push (the `eval-gate` job, about 5 seconds):
+
+* It runs BM25 over the full 140-question golden set.
+* The build fails if hit@5 or MRR@10 drops more than 0.02 below `eval/gate_baseline.json`, or if the golden set
+  shrinks.
+* BM25 needs no model download and is deterministic, so any change in the number means a change in code or data.
+
+What the gate guards is everything all retrievers depend on: document loading, section splitting, chunking,
+tokenisation, the golden set and the relevance rule. Unit tests do not catch silent data bugs there; the gate does.
+Replaying this project's first bug (the `builtins/` folder dropped from the corpus) makes the gate fail and list
+every affected question. Dense and reranked retrieval need the ONNX models and minutes of CPU, so they stay in
+`eval.retrieval_eval`.
+
 ## How far the LLM judge can be trusted
 
 The judge (llama3.1:8b, a different model family from the qwen2.5 generator) marks each answer correct or incorrect

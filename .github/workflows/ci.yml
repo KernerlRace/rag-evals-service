@@ -42,3 +42,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: uv run --locked pytest -q tests/test_pgstore.py
+
+  eval-gate:
+    # Retrieval quality as a build check: BM25 on the full golden set must not drop below eval/gate_baseline.json.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv run --locked python -m eval.gate

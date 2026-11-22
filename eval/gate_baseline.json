@@ -1,0 +1,8 @@
+{
+  "method": "bm25",
+  "chunk_size": 256,
+  "n_questions": 140,
+  "n_chunks": 6363,
+  "hit@5": 0.6857,
+  "mrr@10": 0.5276
+}

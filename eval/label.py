@@ -29,10 +29,11 @@ def main() -> None:
     parser.add_argument(
         "--fresh", action="store_true", help="skip questions already labelled in other runs (a clean held-out check)"
     )
+    parser.add_argument("--author", default=None, help="only questions by this golden-set author (draft / mykyta)")
     args = parser.parse_args()
 
     run = json.loads(args.answers.read_text(encoding="utf-8"))
-    rows = [r for r in run["rows"] if r["answerable"]]
+    rows = [r for r in run["rows"] if r["answerable"] and (args.author is None or r["author"] == args.author)]
     if args.fresh and LABELS.exists():
         with open(LABELS, encoding="utf-8", newline="") as f:
             seen = {r["id"] for r in csv.DictReader(f) if r["answers_file"] != args.answers.name}
